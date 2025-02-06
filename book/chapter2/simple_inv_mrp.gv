@@ -1,0 +1,38 @@
+digraph simple_inventory_mrp
+{
+  /*
+  Sequence of events in a day:
+  1: Observe State (On-hand, On-Order) denoted as (alpha, beta)
+  2: Take Action: Order max(2 - (alpha + beta), 0) units
+  3: Record Reward as negative of holding cost of 1 per unit of on-hand inventory
+  4: Received order quantity that was placed the previous day
+  5: Experience poisson random demand with poisson mean = 1.0
+  6: Record Reward as negative of stockout cost of 10 per unit of missed sale from demand
+  */
+  A [label="&alpha;=0,&beta;=0", color=Red, fontcolor=Red]
+  B [label="&alpha;=0,&beta;=1", color=Blue, fontcolor=Blue]
+  C [label="&alpha;=0,&beta;=2", color=magenta3, fontcolor=magenta3]
+  D [label="&alpha;=1,&beta;=0", color=Brown, fontcolor=Brown]
+  E [label="&alpha;=1,&beta;=1", color=yellow4, fontcolor=yellow4]
+  F [label="&alpha;=2,&beta;=0", color=blue4, fontcolor=blue4]
+
+  A->C [label="p = 1\nr = -10.0", color=Red, fontcolor=Red]
+
+  B->B [label="p = 0.63\nr = -3.68", color=Blue, fontcolor=Blue]
+  B->E [label="p = 0.37\nr = 0", color=Blue, fontcolor=Blue]
+
+  C->A [label="p = 0.26\nr = -1.04", color=magenta3, fontcolor=magenta3]
+  C->D [label="p = 0.37\nr = 0", color=magenta3, fontcolor=magenta3]
+  C->F [label="p = 0.37\nr = 0", color=magenta3, fontcolor=magenta3]
+
+  D->B [label="p = 0.63\nr = -4.68", color=Brown, fontcolor=Brown]
+  D->E [label="p = 0.37\nr = -1.0", color=Brown, fontcolor=Brown]
+  
+  E->A [label="p = 0.26\nr = -2.04", color=yellow4, fontcolor=yellow4]
+  E->D [label="p = 0.37\nr = -1.0", color=yellow4, fontcolor=yellow4]
+  E->F [label="p = 0.37\nr = -1.0", color=yellow4, fontcolor=yellow4]
+
+  F->A [label="p = 0.26\nr = -3.04", color=blue4, fontcolor=blue4]
+  F->D [label="p = 0.37\nr = -2.0", color=blue4, fontcolor=blue4]
+  F->F [label="p = 0.37\nr = -2.0", color=blue4, fontcolor=blue4]
+}
